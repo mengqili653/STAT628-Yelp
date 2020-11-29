@@ -29,7 +29,7 @@ shinyUI(
                             "Please select or enter your business name:",
                             choices = mylist,
                             selected = "Nora",
-                            options = NULL),
+                            options = ),
                 actionButton("update", "Change"),
                 sliderInput("freq",
                             "Minimum Frequency:",

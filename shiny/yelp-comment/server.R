@@ -11,6 +11,7 @@ library(shiny)
 library(tm)
 library(wordcloud)
 library(memoise)
+library(wordcloud2)
 
 data = read.csv("../../Data/word_cloud.csv",header = T, sep = ",", row.names = 1)
 
@@ -53,9 +54,12 @@ shinyServer(function(input, output, session) {
     wordcloud_rep <- repeatable(wordcloud)
     
     output$plot <- renderPlot({
-        v <- terms()
-        wordcloud_rep(names(v), v, scale=c(4,0.5),
-                      min.freq = input$freq, max.words=input$max,
-                      colors=brewer.pal(8, "Dark2"))
-    })
+      v <- terms()
+      wordcloud_rep(names(v), v, scale=c(6,0.5),
+                    min.freq = input$freq, max.words=input$max,
+                    colors=brewer.pal(15, "Dark2"))
+    }, width = 700,
+    height = 700)
+    
+    
 })
