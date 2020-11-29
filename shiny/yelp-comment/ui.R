@@ -31,12 +31,15 @@ shinyUI(
                             selected = "Nora",
                             options = ),
                 actionButton("update", "Change"),
+                hr(),
                 sliderInput("freq",
                             "Minimum Frequency:",
                             min = 1,  max = 50, value = 15),
                 sliderInput("max",
                             "Maximum Number of Words:",
-                            min = 1,  max = 300,  value = 100)
+                            min = 1,  max = 300,  value = 100),
+                sliderInput("rotation", "Rotation:",
+                            min = 0.0, max = 1.0, value = 0.35),
             ),
             # Show a plot of the generated distribution
             mainPanel(

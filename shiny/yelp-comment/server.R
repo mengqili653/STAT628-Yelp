@@ -49,7 +49,7 @@ shinyServer(function(input, output, session) {
             })
         })
     })
-    
+  
     # Make the wordcloud drawing predictable during a session
     wordcloud_rep <- repeatable(wordcloud)
     
@@ -57,6 +57,7 @@ shinyServer(function(input, output, session) {
       v <- terms()
       wordcloud_rep(names(v), v, scale=c(6,0.5),
                     min.freq = input$freq, max.words=input$max,
+                    rot.per = input$rotation,
                     colors=brewer.pal(15, "Dark2"))
     }, width = 700,
     height = 700)
