@@ -7,7 +7,7 @@ Created on Sat Nov 28 13:38:53 2020
 """
 
 import pandas as pd
-df=pd.read_csv("dessert_clean.csv")
+df=pd.read_csv("../Data/dessert_clean.csv")
 print(df.head(5))
 names=df['business_id'].drop_duplicates().values.tolist()
 stars=df['stars_x'].tolist()
