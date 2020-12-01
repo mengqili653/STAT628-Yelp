@@ -1,4 +1,4 @@
-data<-read.csv("words_score.csv")
+data<-read.csv("n_words_score.csv")
 score=c(NULL)
 for (i in 1:length(data$ratio)){
   if (is.na(data$ratio[i])==T){ 
@@ -18,4 +18,21 @@ for (i in 1:length(data$ratio)){
     
 }
 data$score<-score
-write.csv(data,"data_with_score.csv")
+
+top20_score=data.frame()
+names<-unique(data$id)
+for (name in names){
+  current_frame=data[data$id==name,]
+  current_frame=current_frame[order(current_frame$score),]
+  
+  if (length(current_frame$score)<20){
+    selected_20=current_frame
+  } else{
+    selected_20=current_frame[c(1:10,(nrow(current_frame)-9):nrow(current_frame)),]
+  }
+  top20_score<-rbind(top20_score,selected_20)
+}
+
+
+write.csv(top20_score,"n_data_with_score.csv")
+
