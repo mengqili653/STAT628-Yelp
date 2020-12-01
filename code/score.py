@@ -99,5 +99,24 @@ for name in names:
     current_id=name
     current_doc=new_document[new_document['business_id']==current_id]
     words=words.append(words_score(current_doc,current_id))
-words.to_csv("words_score.csv",index=False,header=True)   
+import nltk    
+n_words=pd.DataFrame()
+for name in names:
+  current_frame=words.loc[words['id']==name,]
+  current_li=current_frame.word  
+  li=list(current_li)
+  tags=set(['NN','NNS','NNP'])
+  pos_tags=nltk.pos_tag(li)
+  ret=[]
+  for word,pos in pos_tags:
+      if (pos in tags):
+          ret.append(word)
+  current_n_frame=pd.DataFrame()
+  for w in ret:
+      t=current_frame.loc[current_frame['word']==w,]
+      current_n_frame=current_n_frame.append(t)
+  n_words=n_words.append(current_n_frame)
+
+    
+n_words.to_csv("n_words_score.csv",index=False,header=True)   
  
