@@ -30,7 +30,7 @@ Yelp is a widely used app in the United States that provide a platform for peopl
 
 Basically, we store every middle data file in the data folder, so you can run every script individually. 
 
-The The preprocess.ipynb and word_cloud.ipynb, word_cloud.R contains code to draw the word cloud. 
+The preprocess.ipynb and word_cloud.ipynb, word_cloud.R contains code to draw the word cloud. 
 
 The score and ratio to score file contains code to use naive bayes to calculate the score. 
 
