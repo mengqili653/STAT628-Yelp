@@ -11,47 +11,32 @@ library(shiny)
 library(tm)
 library(wordcloud)
 library(memoise)
-library(wordcloud2)
-
-data = read.csv("../../Data/word_cloud.csv",header = T, sep = ",", row.names = 1)
-
-
-getTermMatrix <- memoise(function(selection) {
-    
-    text = data[data["name"] == selection][2]
-    
-    myCorpus = Corpus(VectorSource(text))
-    myCorpus = tm_map(myCorpus, content_transformer(tolower))
-    myCorpus = tm_map(myCorpus, removePunctuation)
-    myCorpus = tm_map(myCorpus, removeNumbers)
-    myCorpus = tm_map(myCorpus, removeWords,
-                      c(stopwords("SMART"), "thy", "thou", "thee", "the", "and", "but"))
-    
-    myDTM = TermDocumentMatrix(myCorpus,
-                               control = list(minWordLength = 1))
-    
-    m = as.matrix(myDTM)
-    
-    sort(rowSums(m), decreasing = TRUE)
-})
+library(DT)
+library(tidyverse)
+library(dplyr)
+source("global.R")
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output, session) {
     # Define a reactive expression for the document term matrix
     terms <- reactive({
+      validate(
+        need(input$selection1 %in% mylist, "Please enter a valid shop name")
+      )
         # Change when the "update" button is pressed...
-        input$update
+        input$update1
         # ...but not for anything else
         isolate({
             withProgress({
                 setProgress(message = "Processing corpus...")
-                getTermMatrix(input$selection)
+                getTermMatrix(input$selection1)
             })
         })
     })
   
     # Make the wordcloud drawing predictable during a session
     wordcloud_rep <- repeatable(wordcloud)
+    
     
     output$plot <- renderPlot({
       v <- terms()
@@ -63,4 +48,55 @@ shinyServer(function(input, output, session) {
     height = 700)
     
     
+    terms2 <- reactive({
+      validate(
+        need(input$selection2 %in% mylist, "Please enter a valid shop name")
+      )
+      # Change when the "update" button is pressed...
+      input$update2
+      # ...but not for anything else
+      isolate({
+        withProgress({
+          setProgress(message = "Processing data")
+          sentiment %>% filter(name == input$selection2) %>%  distinct() %>% filter(score >= 5) %>% mutate(score = round(score, 1)) %>% arrange(desc(score, ratio))%>% select(word, score)
+        })
+      })
+    })
+    
+    terms3 <- reactive({
+      validate(
+        need(input$selection2 %in% mylist, "Please enter a valid shop name")
+      )
+      # Change when the "update" button is pressed...
+      input$update2
+      # ...but not for anything else
+      isolate({
+        withProgress({
+          setProgress(message = "Processing data")
+          sentiment %>% filter(name == input$selection2) %>%  distinct() %>% filter(score < 5) %>% mutate(score = round(score, 1)) %>% arrange(score)%>% select(word, score)
+        })
+      })
+    })
+    
+    output$view1 <- DT::renderDataTable({
+      v <- terms2()
+      DT::datatable(v)
+    })
+    
+    output$view2 <- DT::renderDataTable({
+      v <- terms3()
+      DT::datatable(v)
+    })
+    
+    
+    
+    output$text6 <- renderText({ 
+      "The author and maintainer of this app is Chenhao Fang. Please contact throught cfang45@wisc.edu if you encountered any bugs." 
+    })
+    output$text7 <- renderText({ 
+      "For source code of this app, please check https://github.com/mengqili653/STAT628-Yelp/tree/main/shiny " 
+    })
 })
+    
+    
+

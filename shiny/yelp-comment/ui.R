@@ -9,11 +9,8 @@
 
 library(shiny)
 library(shinythemes)
-
-data = read.csv("../../Data/word_cloud.csv",header = T, sep = ",", row.names = 1)
-names = as.vector(data$name, mode = 'character')
-mylist = as.list(data$name)
-names(mylist) = data$name
+library(memoise)
+source("global.R")
 
     
 # Define UI for application that draws a histogram
@@ -25,12 +22,12 @@ shinyUI(
         # Sidebar with a slider input for number of bins
         sidebarLayout(
             sidebarPanel(
-                selectizeInput("selection", 
+                selectizeInput("selection1", 
                             "Please select or enter your business name:",
                             choices = mylist,
                             selected = "Nora",
-                            options = ),
-                actionButton("update", "Change"),
+                            options = NULL),
+                actionButton("update1", "Change"),
                 hr(),
                 sliderInput("freq",
                             "Minimum Frequency:",
@@ -49,10 +46,29 @@ shinyUI(
     ),
     
     tabPanel("User Feedback", icon = icon("heart"),   
+         sidebarLayout(
+           sidebarPanel(
+             selectizeInput("selection2", 
+                            "Please select or enter your business name:",
+                            choices = mylist,
+                            selected = "Nora",
+                            options = ),
+             hr(),
+             actionButton("update2", "Change"),
+           ),
+           # Show a plot of the generated distribution
+           mainPanel(
+             h3("What customers like in your bakery"),
+             DT::dataTableOutput("view1"),
+             h3("What you should improve in your bakery"),
+             DT::dataTableOutput("view2"),
+           )
+         )
              
     ),
     
     tabPanel("Contact Info", icon = icon("id-card"),   
-             
+             textOutput("text6"),
+             textOutput("text7"),
     )
 )))

@@ -1,0 +1,12 @@
+name: yelp-comment
+title: yelp-comment
+username:
+account: ustclink
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3335510
+bundleId: 3930738
+url: https://ustclink.shinyapps.io/yelp-comment/
+when: 1606876548.88934
+asMultiple: FALSE
+asStatic: FALSE
