@@ -18,13 +18,13 @@ Yelp is a widely used app in the United States that provide a platform for peopl
 
 * a `code` folder contains the code for analysis.
 
-* a `shiny' folder contains the code for building the shiny app.
+* a `shiny` folder contains the code for building the shiny app.
 
 * a `plot` folder contains plots in our project
 
 * a `slides` folder contains slides and google slides link in our project
 
-* a 'report' folder contains the pdf report.
+* a `report` folder contains the pdf report.
 
 ## How to run the code
 
